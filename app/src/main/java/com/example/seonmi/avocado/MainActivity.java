@@ -169,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(),"정답입니다!",Toast.LENGTH_LONG).show();
                                 mSelectLay.setVisibility(View.VISIBLE);
                                 mTypeLay.setVisibility(View.GONE);
+                                mAnswerBtn.setVisibility(View.GONE);
                                 mAnswerEtxt.setText("");
                             }else{
                                 Toast.makeText(getApplicationContext(),"틀렸습니다ㅠㅠ",Toast.LENGTH_LONG).show();
