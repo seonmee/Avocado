@@ -77,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout mTypeLay;
     private EditText mAnswerEtxt;
     private ImageButton mOkayBtn;
+    private ImageButton mAnswerBtn;
+
+    private  int mCount;
 
     private static List<String> mLableList;
 
@@ -97,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
         mTypeLay = (LinearLayout)findViewById(R.id.lay_type);
         mAnswerEtxt =(EditText)findViewById(R.id.Etxt_answer);
         mOkayBtn = (ImageButton)findViewById(R.id.btn_ok);
+        mAnswerBtn = (ImageButton)findViewById(R.id.btn_answer);
 
 
         mLableList = new ArrayList<>();
@@ -112,12 +116,15 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 startGalleryChooser();
+                                mCount = 0;
+                                mAnswerBtn.setVisibility(View.GONE);
                             }
                         })
                         .setNegativeButton(R.string.dialog_select_camera, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 startCamera();
+                                mCount = 0 ;
                             }
                         });
                 builder.create().show();
@@ -138,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String answer = mAnswerEtxt.getText().toString();
                 Boolean isEqual = false;
+
                         for(int i = 0; i <mLableList.size();i++){
                             if(mLableList.get(i).equals(answer)){
                                 isEqual = true;
@@ -147,11 +155,39 @@ public class MainActivity extends AppCompatActivity {
                                 isEqual = false;
                             }
                         }
-                if (isEqual == true){
-                    Toast.makeText(getApplicationContext(),"정답입니다.",Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(getApplicationContext(),"틀렸습니다.",Toast.LENGTH_LONG).show();
+
+                /*  3번 틀리면  정답 보여주기 */
+                if (mCount >= 2) {
+                    mAnswerBtn.setVisibility(View.VISIBLE);
                 }
+
+                        if(answer.isEmpty()){
+                            Toast.makeText(getApplicationContext(),"정답을 입력해주세요!",Toast.LENGTH_LONG).show();
+                        }
+                        else{
+                            if (isEqual == true){
+                                Toast.makeText(getApplicationContext(),"정답입니다!",Toast.LENGTH_LONG).show();
+                                mSelectLay.setVisibility(View.VISIBLE);
+                                mTypeLay.setVisibility(View.GONE);
+                                mAnswerEtxt.setText("");
+                            }else{
+                                Toast.makeText(getApplicationContext(),"틀렸습니다ㅠㅠ",Toast.LENGTH_LONG).show();
+                                mCount++;
+                            }
+                        }
+            }
+        });
+
+        /* 정답 보여주기 */
+        mAnswerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StringBuilder answer = new StringBuilder("Answer :  \n\n");
+                for (int i = 0 ; i < mLableList.size();i++){
+                    answer.append(String.format(Locale.US, "%d: %s", i+1 , mLableList.get(i)));
+                    answer.append("\n");
+                }
+                Toast.makeText(getApplicationContext(),answer.toString(),Toast.LENGTH_LONG).show();
             }
         });
 
@@ -359,14 +395,6 @@ public class MainActivity extends AppCompatActivity {
             return "Cloud Vision API request failed. Check logs for details.";
         }
 
-        protected void onPostExecute(String result) {
-            MainActivity activity = mActivityWeakReference.get();
-            if (activity != null && !activity.isFinishing()) {
-                Toast.makeText(activity.getApplicationContext(),result , Toast.LENGTH_LONG).show();
-               // TextView imageDetail = activity.findViewById(R.id.image_details);
-               // imageDetail.setText(result);
-            }
-        }
     }
 
 
@@ -396,6 +424,7 @@ public class MainActivity extends AppCompatActivity {
         StringBuilder message = new StringBuilder("I found these things:\n\n");
 
         List<EntityAnnotation> labels = response.getResponses().get(0).getLabelAnnotations();
+
         if (labels != null) {
             for (EntityAnnotation label : labels) {
                 message.append(String.format(Locale.US, "%.3f: %s", label.getScore(), label.getDescription()));

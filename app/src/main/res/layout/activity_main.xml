@@ -109,12 +109,6 @@
             android:orientation="vertical"
             android:weightSum="5">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1.5"
-                android:orientation="vertical"></LinearLayout>
-
             <TextView
                 android:id="@+id/txt_msg"
                 android:layout_width="match_parent"
@@ -158,7 +152,7 @@
             <LinearLayout
                 android:id="@+id/lay_type"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
                 android:gravity="right"
                 android:orientation="horizontal"
@@ -181,14 +175,67 @@
                     android:background="@drawable/background_roundbtn"
                     android:backgroundTint="@color/colorPrimary"
                     app:srcCompat="@drawable/check_mark" />
+
             </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="vertical"
+            android:weightSum="5">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="A"
+                android:textAlignment="center"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:visibility="invisible" />
+
+            <LinearLayout
+                android:id="@+id/lay_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="left"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/btn_answer"
+                    android:layout_width="@dimen/app_icon_little"
+                    android:layout_height="@dimen/app_icon_little"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_roundbtn"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/eye" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:gravity="right"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:layout_width="@dimen/app_icon_little"
+                    android:layout_height="@dimen/app_icon_little"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_roundbtn"
+                    android:backgroundTint="@color/colorPrimary"
+                    app:srcCompat="@drawable/check_mark" />
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
